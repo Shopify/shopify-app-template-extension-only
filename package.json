@@ -15,7 +15,7 @@
   "devDependencies": {
     "@graphql-codegen/cli": "^6.1.2",
     "@preact/preset-vite": "^2.10.2",
-    "@shopify/api-codegen-preset": "^1.2.2",
+    "@shopify/api-codegen-preset": "^2.0.0",
     "@shopify/app-bridge-types": "^0.7.0",
     "@shopify/polaris-types": "^1.0.1",
     "@shopify/shopify-api": "^12.3.0",
