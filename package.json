@@ -18,7 +18,7 @@
     "@shopify/api-codegen-preset": "^1.2.2",
     "@shopify/app-bridge-types": "^0.7.0",
     "@shopify/polaris-types": "^1.0.1",
-    "@shopify/shopify-api": "^12.3.0",
+    "@shopify/shopify-api": "^13.0.0",
     "@types/node": "^25.3.3",
     "eslint": "^9.39.3",
     "eslint-config-preact": "^2.0.0",
