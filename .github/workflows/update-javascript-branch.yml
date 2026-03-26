@@ -75,6 +75,9 @@ jobs:
           export default [
             importPlugin.flatConfigs.recommended,
             {
+              languageOptions: {
+                ecmaVersion: "latest",
+              },
               rules: {
                 "import/order": "error",
                 "import/newline-after-import": "error",
@@ -107,8 +110,7 @@ jobs:
           git add .
           git checkout -b temp_javascript_updates
           git commit -m "Convert template to Javascript"
-          git checkout javascript || git checkout -b javascript
-          git pull origin javascript || echo "No remote javascript branch yet"
+          git fetch origin javascript || git checkout -b javascript main
           git checkout -
           git rebase -m -X theirs javascript
           git push -f origin temp_javascript_updates:javascript_updates
