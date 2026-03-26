@@ -44,4 +44,10 @@ export function App() {
   );
 }
 
-render(<App />, document.getElementById("app"));
+const app = document.getElementById("app");
+
+if (app) {
+  render(<App />, app);
+} else {
+  throw new Error("App root element not found. index.html is likely missing div with an id of 'app'");
+}
