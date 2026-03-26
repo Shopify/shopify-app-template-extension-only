@@ -1,0 +1,6 @@
+name = "hosted app home"
+
+[commands]
+dev = "pnpm run dev"
+build = "pnpm run build"
+
