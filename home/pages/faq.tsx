@@ -36,7 +36,6 @@ export function FAQ({ id }: { id?: string }) {
     if (isNew) {
       const faqGid = await createFAQ(faq);
       shopify.toast.show("FAQ created");
-      shopify.saveBar.hide("faq-save-bar");
       return route(`/faq/${gidToId(faqGid)}`);
     }
 
@@ -44,7 +43,6 @@ export function FAQ({ id }: { id?: string }) {
     setSnapshot({ ...faq });
     setStatus("idle");
     shopify.toast.show("FAQ updated");
-    shopify.saveBar.hide("faq-save-bar");
   };
 
   const handleDelete = async () => {

@@ -34,6 +34,10 @@ export function App() {
   return (
     <LocationProvider>
       <AppProvider>
+        <s-app-nav>
+          <s-link href="/" rel="home">Home</s-link>
+          <s-link href="/faq/new">FAQ</s-link>
+        </s-app-nav>
         <Router>
           <Route path="/" component={Home} />
           <Route path="/faq/:id" component={FAQ} />
@@ -44,10 +48,4 @@ export function App() {
   );
 }
 
-const app = document.getElementById("app");
-
-if (app) {
-  render(<App />, app);
-} else {
-  throw new Error("App root element not found. index.html is likely missing div with an id of 'app'");
-}
+render(<App />, document.getElementById("app"));
