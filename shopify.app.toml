@@ -24,6 +24,9 @@ scopes = "write_metaobject_definitions,write_metaobjects,write_products"
 [auth]
 redirect_urls = [ "https://shopify.dev/apps/default-app-home/api/auth" ]
 
+[sidekick]
+extensions_summary = "Read FAQs"
+
 [metaobjects.app.faq]
 name = "FAQ"
 

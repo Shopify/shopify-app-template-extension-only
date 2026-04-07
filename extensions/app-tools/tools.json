@@ -1,5 +1,6 @@
 [
   {
+    "$schema": "https://extensions.shopifycdn.com/shopifycloud/schemas/v1/tool.json",
     "name": "list_faqs",
     "description": "List all FAQ entries",
     "inputSchema": {
@@ -35,6 +36,7 @@
     }
   },
   {
+    "$schema": "https://extensions.shopifycdn.com/shopifycloud/schemas/v1/tool.json",
     "name": "get_faq",
     "description": "Get a single FAQ entry by ID",
     "inputSchema": {
