@@ -23,7 +23,7 @@ jobs:
           version: 9
 
       - name: Install dependencies using ${{ matrix.manager }}
-        run: ${{ matrix.manager }} install
+        run: ${{ matrix.manager }} install ${{ matrix.manager == 'yarn' && '--ignore-engines' || '' }}
 
       - name: Run TypeScript type checking
         run: npx tsc --noEmit
