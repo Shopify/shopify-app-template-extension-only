@@ -28,10 +28,5 @@
   },
   "eslintConfig": {
     "extends": "preact"
-  },
-  "workspaces": {
-    "packages": [
-      "extensions/*"
-    ]
   }
 }
