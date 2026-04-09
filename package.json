@@ -23,7 +23,7 @@
     "eslint": "^9.39.3",
     "eslint-config-preact": "^2.0.0",
     "graphql-config": "^5.1.5",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.2",
     "vite": "^7.0.4"
   },
   "eslintConfig": {
