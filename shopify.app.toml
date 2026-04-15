@@ -5,6 +5,7 @@ application_url = "https://extensions.shopifycdn.com"
 embedded = true
 
 [admin]
+# Learn more about content requirements at https://shopify.dev/docs/apps/launch/deployment/hosted-apps#content-requirements 
 static_root = "./dist"
 
 [build]
