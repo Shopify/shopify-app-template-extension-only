@@ -1,21 +1,22 @@
-import { useState, useEffect } from "preact/hooks";
-import { type FAQSummary, listFAQs } from "../../shared/models/faq";
-import { gidToId } from "../../shared/utils/gid";
+import {useState, useEffect} from 'preact/hooks';
+import {useLocation} from 'preact-iso';
+import {listFAQs} from '../../../../shared/models/faq.js';
+import {gidToId} from '../../../../shared/utils/gid.js';
 
-export function Home() {
-  const [faqs, setFaqs] = useState<FAQSummary[]>([]);
+export default function HomePage() {
+  const [faqs, setFaqs] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
-      shopify.loading(true);
       setFaqs(await listFAQs());
       setLoading(false);
-      shopify.loading(false);
     })();
   }, []);
 
   const hasFaqs = faqs.length > 0;
+
+  const location = useLocation();
 
   return (
     <s-page heading="FAQs">
@@ -104,14 +105,14 @@ export function Home() {
                 <s-table-row key={faq.id}>
                   <s-table-cell>
                     <s-link href={`/faq/${gidToId(faq.id)}`}>
-                      {faq.question || "Untitled"}
+                      {faq.question || 'Untitled'}
                     </s-link>
                   </s-table-cell>
                   <s-table-cell>
                     <s-badge
-                      tone={faq.show_on_faq_page ? "default" : "subdued"}
+                      tone={faq.show_on_faq_page ? 'auto' : 'neutral'}
                     >
-                      {faq.show_on_faq_page ? "Shown" : "Hidden"}
+                      {faq.show_on_faq_page ? 'Shown' : 'Hidden'}
                     </s-badge>
                   </s-table-cell>
                 </s-table-row>
@@ -120,6 +121,9 @@ export function Home() {
           </s-table>
         </s-section>
       )}
+      <s-section heading="Developer">
+        <s-button onclick={() => location.route('/nav-test')}>Navigation Test</s-button>
+      </s-section>
     </s-page>
   );
 }

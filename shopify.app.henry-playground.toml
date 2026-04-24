@@ -1,0 +1,28 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "b02990aa23d0f8b9a024e94b63098e2f"
+name = "henry-playground"
+application_url = "https://inspector-blocks-ordered-answering.trycloudflare.com"
+embedded = true
+handle = "henry-playground"
+
+[webhooks]
+api_version = "2025-04"
+
+[access.admin]
+direct_api_mode = "offline"
+embedded_app_direct_api_access = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "read_customers,read_locales,read_markets,read_orders,write_customers,write_products"
+
+[auth]
+redirect_urls = [
+  "https://inspector-blocks-ordered-answering.trycloudflare.com/auth/callback",
+  "https://inspector-blocks-ordered-answering.trycloudflare.com/auth/shopify/callback",
+  "https://inspector-blocks-ordered-answering.trycloudflare.com/api/auth/callback"
+]
+
+[pos]
+embedded = true

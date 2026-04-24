@@ -1,32 +1,19 @@
 {
-  "private": true,
-  "type": "module",
+  "name": "ui-ext-hosted-jam",
+  "version": "1.0.0",
+  "license": "UNLICENSED",
   "scripts": {
-    "dev": "vite build --watch",
-    "build": "vite build",
-    "preview": "vite preview",
-    "codegen": "graphql-codegen",
-    "codegen:watch": "graphql-codegen --watch"
+    "shopify": "shopify",
+    "build": "shopify app build",
+    "dev": "shopify app dev",
+    "info": "shopify app info",
+    "generate": "shopify app generate",
+    "deploy": "shopify app deploy"
   },
-  "dependencies": {
-    "preact": "^10.26.9",
-    "preact-iso": "^2.11.1"
-  },
-  "devDependencies": {
-    "@graphql-codegen/cli": "^6.1.2",
-    "@preact/preset-vite": "^2.10.2",
-    "@shopify/api-codegen-preset": "^2.0.0",
-    "@shopify/app-bridge-types": "^0.7.0",
-    "@shopify/polaris-types": "^1.0.1",
-    "@shopify/shopify-api": "^13.0.0",
-    "@types/node": "^25.3.3",
-    "eslint": "^9.39.3",
-    "eslint-config-preact": "^2.0.0",
-    "graphql-config": "^5.1.5",
-    "typescript": "^5.9.3",
-    "vite": "^7.0.4"
-  },
-  "eslintConfig": {
-    "extends": "preact"
-  }
+  "dependencies": {},
+  "trustedDependencies": [
+    "@shopify/plugin-cloudflare"
+  ],
+  "author": "mitch",
+  "private": true
 }

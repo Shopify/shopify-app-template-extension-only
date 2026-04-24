@@ -1,156 +1,78 @@
-# Shopify App Template - Extension Only
+# Shopify App Template - Extension only
 
-This is a template for building a [Shopify app](https://shopify.dev/docs/apps/getting-started) using [Preact](https://preactjs.com/) and [Vite](https://vite.dev/). It uses Shopify's [Direct API access](https://shopify.dev/docs/api/app-home#direct-api-access) and [App Bridge](https://shopify.dev/docs/api/app-bridge) to make authenticated calls to the Shopify Admin API directly from the browser — no server required.
+This is a template for building an [extension-only Shopify app](https://shopify.dev/docs/apps/build/app-extensions/build-extension-only-app). It contains the basics for building a Shopify app that uses only app extensions.
 
-Rather than cloning this repo, follow the [Quick Start steps](#quick-start) below.
+This template doesn't include a server or the ability to embed a page in the Shopify Admin. If you want either of these capabilities, choose the [Remix app template](https://github.com/Shopify/shopify-app-template-remix) instead.
 
-## Quick start
+Whether you choose to use this template or another one, you can use your preferred package manager and the Shopify CLI with [these steps](#installing-the-template).
 
-### Prerequisites
+## Benefits
 
-Before you begin, you'll need to [download and install the Shopify CLI](https://shopify.dev/docs/apps/tools/cli/getting-started) if you haven't already.
+Shopify apps are built on a variety of Shopify tools to create a great merchant experience. The [create an app](https://shopify.dev/docs/apps/getting-started/create) tutorial in our developer documentation will guide you through creating a Shopify app.
 
-### Setup
+This app template does little more than install the CLI and scaffold a repository.
 
-```shell
-shopify app init --template=https://github.com/Shopify/shopify-app-template-extension-only
-```
+## Getting started
 
-### Local Development
+### Requirements
 
-```shell
-shopify app dev
-```
+1. You must [download and install Node.js](https://nodejs.org/en/download/) if you don't already have it.
+1. You must [create a Shopify partner account](https://partners.shopify.com/signup) if you don’t have one.
+1. You must create a store for testing if you don't have one, either a [development store](https://help.shopify.com/en/partners/dashboard/development-stores#create-a-development-store) or a [Shopify Plus sandbox store](https://help.shopify.com/en/partners/dashboard/managing-stores/plus-sandbox-store).
 
-Press P to open the URL to your app. Once you click install, you can start development.
+### Installing the template
 
-Local development is powered by [Shopify CLI](https://shopify.dev/docs/apps/build/cli-for-apps/test-apps-locally). It logs into your account, connects to an app, provides environment variables, updates remote config, creates a tunnel and provides commands to generate extensions.
-
-## How it works
-
-### Authentication
-
-This template uses [Shopify managed installation](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation). Shopify handles the OAuth flow and app installation automatically. Once installed, the app is fully embedded in the Shopify Admin.
-
-### Querying data
-
-This template uses [Direct API access](https://shopify.dev/docs/api/app-home#direct-api-access) — the Shopify Admin API is called directly from the browser using App Bridge. No server-side code is needed.
-
-This template comes pre-configured with examples of querying data using GraphQL with direct API access, and using [metaobjects](https://shopify.dev/docs/apps/custom-data/metaobjects) to store and retrieve structured app data — see [/shared/models/faq.ts](./shared/models/faq.ts).
-
-### App Bridge
-
-[App Bridge](https://shopify.dev/docs/api/app-bridge) is loaded automatically in embedded apps.
-
-### Polaris Web Components
-
-This template uses [Polaris Web Components](https://shopify.dev/docs/api/app-home/polaris-web-components) — the native custom element version of Polaris that works in any framework (including Preact). No additional package installation is required as they are provided automatically in the Shopify Admin iframe.
-
-## GraphQL Codegen
-
-This template is pre-configured with [GraphQL Codegen](https://the-guild.dev/graphql/codegen) to generate TypeScript types from your GraphQL queries.
-
-To regenerate types after updating queries:
-
-```shell
-npm run codegen
-```
-
-To watch for changes:
-
-```shell
-npm run codegen:watch
-```
-
-## Build
-
-Build the app by running:
-
-Using npm:
-
-```shell
-npm run build
-```
+This template can be installed using your preferred package manager:
 
 Using yarn:
 
 ```shell
-yarn build
+yarn create @shopify/app
+```
+
+Using npm:
+
+```shell
+npm init @shopify/app@latest
 ```
 
 Using pnpm:
 
 ```shell
-pnpm run build
+pnpm create @shopify/app@latest
 ```
 
-## Shopify Dev MCP
+This will clone the template and install the required dependencies.
 
-This template is configured with the Shopify Dev MCP. This instructs [Cursor](https://cursor.com/), [GitHub Copilot](https://github.com/features/copilot), [Claude Code](https://claude.com/product/claude-code), and [Google Gemini CLI](https://github.com/google-gemini/gemini-cli) to use the Shopify Dev MCP.
+#### Local Development
 
-For more information on the Shopify Dev MCP please read [the documentation](https://shopify.dev/docs/apps/build/devmcp).
+[The Shopify CLI](https://shopify.dev/docs/apps/tools/cli) connects to an app in your Partners dashboard. It provides environment variables and runs commands in parallel.
 
-## Metafields and Metaobjects
+You can develop locally using your preferred package manager. Run one of the following commands from the root of your app.
 
-This template uses [metaobjects](https://shopify.dev/docs/apps/custom-data/metaobjects) and [metafields](https://shopify.dev/docs/apps/custom-data/metafields) to store structured app data without a custom database.
+Using yarn:
 
-### Metaobject: FAQ
-
-The template defines a `faq` metaobject type for storing FAQ entries. Each FAQ has a question, answer, a flag to control visibility on the FAQ page, and optional product associations.
-
-Defined in `shopify.app.toml`:
-
-```toml
-[metaobjects.app.faq]
-name = "FAQ"
-
-[metaobjects.app.faq.fields.question]
-name = "Question"
-type = "single_line_text_field"
-required = true
-
-[metaobjects.app.faq.fields.answer]
-name = "Answer"
-type = "multi_line_text_field"
-required = true
-
-[metaobjects.app.faq.fields.show_on_faq_page]
-name = "Show on FAQ page"
-type = "boolean"
-
-[metaobjects.app.faq.fields.products]
-name = "Products"
-type = "list.product_reference"
+```shell
+yarn dev
 ```
 
-### Metafield: Product FAQ
+Using npm:
 
-A metafield definition links individual products to a FAQ metaobject entry, allowing merchants to associate a FAQ with specific products.
-
-```toml
-[product.metafields.app.faq]
-name = "FAQ"
-description = "FAQ for this product"
-type = "metaobject_reference<$app:faq>"
-access.admin = "merchant_read_write"
+```shell
+npm run dev
 ```
 
-These definitions are automatically synced to Shopify when you run `shopify app dev` or `shopify app deploy`. See [/shared/models/faq.ts](./shared/models/faq.ts) for the client-side model that reads and writes these metaobjects via the Admin GraphQL API.
+Using pnpm:
 
-## Resources
+```shell
+pnpm run dev
+```
 
-Preact & Vite:
+Open the URL generated in your console. Once you grant permission to the app, you can start development (such as generating extensions).
 
-- [Preact docs](https://preactjs.com/guide/v10/getting-started)
-- [Vite docs](https://vite.dev/)
+## Developer resources
 
-Shopify:
-
-- [Intro to Shopify apps](https://shopify.dev/docs/apps/getting-started)
-- [Direct API access](https://shopify.dev/docs/api/app-home#direct-api-access)
+- [Introduction to Shopify apps](https://shopify.dev/docs/apps/getting-started)
+- [App extensions](https://shopify.dev/docs/apps/build/app-extensions)
+- [Extension only apps](https://shopify.dev/docs/apps/build/app-extensions/build-extension-only-app)
 - [Shopify CLI](https://shopify.dev/docs/apps/tools/cli)
-- [App Bridge](https://shopify.dev/docs/api/app-bridge)
-- [Polaris Web Components](https://shopify.dev/docs/api/app-home/polaris-web-components)
-- [Metaobjects](https://shopify.dev/docs/apps/custom-data/metaobjects)
-- [App extensions](https://shopify.dev/docs/apps/app-extensions/list)
-- [Shopify Functions](https://shopify.dev/docs/api/functions)
