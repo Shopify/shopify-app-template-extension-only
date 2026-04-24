@@ -4,7 +4,6 @@ api_version = "2026-04"
 name = "t:name"
 handle = "app-home"
 type = "ui_extension"
-uid = "83247469-d4a8-2612-c903-5468f6914aaa918849e8"
 
 # Only 1 target can be specified for each Admin block extension
 [[extensions.targeting]]

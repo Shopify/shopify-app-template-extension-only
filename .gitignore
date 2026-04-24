@@ -1,29 +1,36 @@
-# Environment Configuration
-.env
-.env.*
-
-# Dependency directory
-node_modules
-
-# Test coverage directory
-coverage
-
-# Ignore Apple macOS Desktop Services Store
-.DS_Store
-
 # Logs
 logs
 *.log
-
-# extensions build output
-extensions/*/build
-extensions/*/dist
-
-# lock files
-
-
-
+node_modules
+npm-debug.log*
+package-lock.json
+yarn-debug.log*
+yarn-error.log*
+yarn.lock
+pnpm-debug.log*
+pnpm-lock.yaml
+lerna-debug.log*
 
 # Ignore shopify files created during app dev
 .shopify/*
 .shopify.lock
+
+# Environment variables
+.env
+.env.*
+
+# Build
+dist
+shared/types/graphql
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
