@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'preact/hooks';
 import {useLocation} from 'preact-iso';
-import {listFAQs} from '../../../../shared/models/faq.js';
-import {gidToId} from '../../../../shared/utils/gid.js';
+import {listFAQs} from '../../../../shared/models/faq';
+import {gidToId} from '../../../../shared/utils/gid';
 
 export default function HomePage() {
   const [faqs, setFaqs] = useState([]);

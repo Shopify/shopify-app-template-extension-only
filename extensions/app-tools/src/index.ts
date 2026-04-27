@@ -1,5 +1,5 @@
-import { listFAQs, fetchFAQ } from '../../../shared/models/faq.js';
-import { gidToId } from '../../../shared/utils/gid.js';
+import { listFAQs, fetchFAQ } from '../../../shared/models/faq';
+import { gidToId } from '../../../shared/utils/gid';
 
 const MIME_TYPE = 'application/faq';
 

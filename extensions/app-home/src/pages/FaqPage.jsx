@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'preact/hooks';
 import {useLocation} from 'preact-iso';
-import {fetchFAQ, createFAQ, updateFAQ, deleteFAQ, EMPTY_FAQ} from '../../../../shared/models/faq.js';
-import {gidToId} from '../../../../shared/utils/gid.js';
+import {fetchFAQ, createFAQ, updateFAQ, deleteFAQ, EMPTY_FAQ} from '../../../../shared/models/faq';
+import {gidToId} from '../../../../shared/utils/gid';
 
 export default function FaqPage({id}) {
   const isNew = !id || id === 'new';
