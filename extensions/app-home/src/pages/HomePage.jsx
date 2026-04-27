@@ -1,5 +1,4 @@
 import {useState, useEffect} from 'preact/hooks';
-import {useLocation} from 'preact-iso';
 import {listFAQs} from '../../../../shared/models/faq';
 import {gidToId} from '../../../../shared/utils/gid';
 
@@ -16,8 +15,6 @@ export default function HomePage() {
 
   const hasFaqs = faqs.length > 0;
 
-  const location = useLocation();
-
   return (
     <s-page heading="FAQs">
       <s-button slot="primary-action" variant="primary" href="/faq/new">
@@ -25,7 +22,7 @@ export default function HomePage() {
       </s-button>
 
       {!loading && (
-        <s-section slot="aside" heading="App template specs">
+        <s-section slot="aside" heading={i18n.translate('welcome', {target})}>
           <s-paragraph>
             <s-text>Framework: </s-text>
             <s-link href="https://preactjs.com/" target="_blank">
@@ -121,9 +118,6 @@ export default function HomePage() {
           </s-table>
         </s-section>
       )}
-      <s-section heading="Developer">
-        <s-button onclick={() => location.route('/nav-test')}>Navigation Test</s-button>
-      </s-section>
     </s-page>
   );
 }

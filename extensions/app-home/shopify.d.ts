@@ -24,8 +24,3 @@ declare module './src/pages/NotFoundPage.jsx' {
   const globalThis: { shopify: typeof shopify };
 }
 
-//@ts-ignore
-declare module './src/pages/NavTestPage.jsx' {
-  const shopify: import('@shopify/ui-extensions/admin.app.home.render').Api;
-  const globalThis: { shopify: typeof shopify };
-}
