@@ -22,7 +22,7 @@ export default function HomePage() {
       </s-button>
 
       {!loading && (
-        <s-section slot="aside" heading={i18n.translate('welcome', {target})}>
+        <s-section slot="aside" heading={shopify.i18n.translate('welcome', {target: shopify.extension.target})}>
           <s-paragraph>
             <s-text>Framework: </s-text>
             <s-link href="https://preactjs.com/" target="_blank">
