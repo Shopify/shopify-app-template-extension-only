@@ -95,15 +95,15 @@ declare module './src/index.ts' {
     register(
       name: 'list_faqs',
       handler: (
-        input: ListFaqsInput
-      ) => ListFaqsOutput | Promise<ListFaqsOutput>
+        input: ListFaqsInput,
+      ) => ListFaqsOutput | Promise<ListFaqsOutput>,
     );
     /**
      * Get a single FAQ entry by ID
      */
     register(
       name: 'get_faq',
-      handler: (input: GetFaqInput) => GetFaqOutput | Promise<GetFaqOutput>
+      handler: (input: GetFaqInput) => GetFaqOutput | Promise<GetFaqOutput>,
     );
   }
 

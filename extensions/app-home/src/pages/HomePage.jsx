@@ -1,17 +1,15 @@
-import { useState, useEffect } from "preact/hooks";
-import { type FAQSummary, listFAQs } from "../../shared/models/faq";
-import { gidToId } from "../../shared/utils/gid";
+import {useState, useEffect} from 'preact/hooks';
+import {listFAQs} from '../../../../shared/models/faq';
+import {gidToId} from '../../../../shared/utils/gid';
 
-export function Home() {
-  const [faqs, setFaqs] = useState<FAQSummary[]>([]);
+export default function HomePage() {
+  const [faqs, setFaqs] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
-      shopify.loading(true);
       setFaqs(await listFAQs());
       setLoading(false);
-      shopify.loading(false);
     })();
   }, []);
 
@@ -24,7 +22,7 @@ export function Home() {
       </s-button>
 
       {!loading && (
-        <s-section slot="aside" heading="App template specs">
+        <s-section slot="aside" heading={i18n.translate('welcome', {target})}>
           <s-paragraph>
             <s-text>Framework: </s-text>
             <s-link href="https://preactjs.com/" target="_blank">
@@ -104,14 +102,14 @@ export function Home() {
                 <s-table-row key={faq.id}>
                   <s-table-cell>
                     <s-link href={`/faq/${gidToId(faq.id)}`}>
-                      {faq.question || "Untitled"}
+                      {faq.question || 'Untitled'}
                     </s-link>
                   </s-table-cell>
                   <s-table-cell>
                     <s-badge
-                      tone={faq.show_on_faq_page ? "default" : "subdued"}
+                      tone={faq.show_on_faq_page ? 'auto' : 'neutral'}
                     >
-                      {faq.show_on_faq_page ? "Shown" : "Hidden"}
+                      {faq.show_on_faq_page ? 'Shown' : 'Hidden'}
                     </s-badge>
                   </s-table-cell>
                 </s-table-row>
