@@ -7,6 +7,6 @@
     "preact": "^10.10.x",
     "preact-iso": "^2.9.1",
     "@preact/signals": "^2.3.x",
-    "@shopify/ui-extensions": "0.0.0-snapshot-20260423130041"
+    "@shopify/ui-extensions": "2026.7.x"
   }
 }

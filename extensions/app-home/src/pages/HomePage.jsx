@@ -32,7 +32,7 @@ export default function HomePage() {
           <s-paragraph>
             <s-text>Interface: </s-text>
             <s-link
-              href="https://shopify.dev/docs/api/app-home/using-polaris-components"
+              href="https://shopify.dev/docs/api/app-home/web-components"
               target="_blank"
             >
               Polaris web components
