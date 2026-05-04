@@ -44,7 +44,7 @@ This template comes pre-configured with examples of querying data using GraphQL 
 
 ### Polaris Web Components
 
-This template uses [Polaris Web Components](https://shopify.dev/docs/api/app-home/polaris-web-components) — the native custom element version of Polaris that works in any framework (including Preact). No additional package installation is required as they are provided automatically in the Shopify Admin iframe.
+This template uses [Polaris Web Components](https://shopify.dev/docs/api/app-home/web-components) — the native custom element version of Polaris that works in any framework (including Preact). No additional package installation is required as they are provided automatically in the Shopify Admin iframe.
 
 ## GraphQL Codegen
 
@@ -150,7 +150,7 @@ Shopify:
 - [Direct API access](https://shopify.dev/docs/api/app-home#direct-api-access)
 - [Shopify CLI](https://shopify.dev/docs/apps/tools/cli)
 - [App Bridge](https://shopify.dev/docs/api/app-bridge)
-- [Polaris Web Components](https://shopify.dev/docs/api/app-home/polaris-web-components)
+- [Polaris Web Components](https://shopify.dev/docs/api/app-home/web-components)
 - [Metaobjects](https://shopify.dev/docs/apps/custom-data/metaobjects)
 - [App extensions](https://shopify.dev/docs/apps/app-extensions/list)
 - [Shopify Functions](https://shopify.dev/docs/api/functions)
