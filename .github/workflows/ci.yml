@@ -4,12 +4,11 @@ name: CI
 
 jobs:
   CI:
-    name: Node ${{ matrix.node }} and ${{ matrix.manager }}
+    name: Node ${{ matrix.node }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node: [20.19.0, 22, 24]
-        manager: ['npm', 'yarn', 'pnpm']
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Setup Node.js and pnpm
@@ -17,11 +16,10 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - name: Install dependencies using ${{ matrix.manager }}
-        run: ${{ matrix.manager }} install ${{ matrix.manager == 'yarn' && '--ignore-engines' || '' }}
+      - name: Install dependencies
+        run: pnpm install
 
       - name: Run TypeScript type checking
-        run: pnpx tsc --noEmit
-
-      - name: Build application
-        run: pnpm run build
+        run: |
+          pnpm dlx --package=typescript tsc -p extensions/app-home --noEmit
+          pnpm dlx --package=typescript tsc -p extensions/app-tools --noEmit

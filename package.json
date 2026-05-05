@@ -2,14 +2,15 @@
   "name": "ui-ext-hosted-jam",
   "version": "1.0.0",
   "license": "UNLICENSED",
-  "packageManager": "pnpm@10.33.0",
+  "workspaces": ["extensions/*"],
   "scripts": {
     "shopify": "shopify",
     "build": "shopify app build",
     "dev": "shopify app dev",
     "info": "shopify app info",
     "generate": "shopify app generate",
-    "deploy": "shopify app deploy"
+    "deploy": "shopify app deploy",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {},
   "trustedDependencies": [
