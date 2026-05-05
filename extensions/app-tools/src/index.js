@@ -1,8 +1,14 @@
 import { listFAQs, fetchFAQ } from '../../../shared/models/faq';
 import { gidToId } from '../../../shared/utils/gid';
 
+/** @typedef {import('../../../shared/models/faq').FAQ} FAQ */
+
 const MIME_TYPE = 'application/faq';
 
+/**
+ * @param {string} id
+ * @param {FAQ} faq
+ */
 function toResourceLink(id, faq) {
   return {
     type: 'resource_link',
@@ -24,10 +30,14 @@ export default () => {
     };
   });
 
-  shopify.tools.register('get_faq', async ({ id }) => {
-    const faq = await fetchFAQ(gidToId(id));
-    return {
-      results: [toResourceLink(id, faq)],
-    };
-  });
+  shopify.tools.register(
+    'get_faq',
+    /** @param {{ id: string }} input */
+    async ({ id }) => {
+      const faq = await fetchFAQ(gidToId(id));
+      return {
+        results: [toResourceLink(id, faq)],
+      };
+    },
+  );
 };

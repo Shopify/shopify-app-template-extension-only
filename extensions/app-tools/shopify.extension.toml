@@ -7,7 +7,7 @@ type = "ui_extension"
 description = "t:description"
 
 [[extensions.targeting]]
-module = "./src/index.ts"
+module = "./src/index.js"
 target = "admin.app.tools.data"
 tools = "./tools.json"
 instructions = "./instructions.md"
