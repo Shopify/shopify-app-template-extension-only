@@ -1,7 +1,7 @@
 import '@shopify/ui-extensions';
 
 //@ts-ignore
-declare module './src/index.ts' {
+declare module './src/index.js' {
   interface ListFaqsInput {
     [k: string]: unknown;
   }
@@ -97,14 +97,14 @@ declare module './src/index.ts' {
       handler: (
         input: ListFaqsInput,
       ) => ListFaqsOutput | Promise<ListFaqsOutput>,
-    );
+    ): void;
     /**
      * Get a single FAQ entry by ID
      */
     register(
       name: 'get_faq',
       handler: (input: GetFaqInput) => GetFaqOutput | Promise<GetFaqOutput>,
-    );
+    ): void;
   }
 
   const shopify: import('@shopify/ui-extensions/admin.app.tools.data').Api & {

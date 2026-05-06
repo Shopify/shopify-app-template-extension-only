@@ -2,8 +2,10 @@ import {useState, useEffect} from 'preact/hooks';
 import {listFAQs} from '../../../../shared/models/faq';
 import {gidToId} from '../../../../shared/utils/gid';
 
+/** @typedef {import('../../../../shared/models/faq').FAQSummary} FAQSummary */
+
 export default function HomePage() {
-  const [faqs, setFaqs] = useState([]);
+  const [faqs, setFaqs] = useState(/** @type {FAQSummary[]} */ ([]));
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

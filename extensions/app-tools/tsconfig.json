@@ -4,6 +4,7 @@
     "checkJs": true,
     "allowJs": true,
     "moduleResolution": "node",
+    "ignoreDeprecations": "6.0",
     "esModuleInterop": true,
     "noEmit": true
   }

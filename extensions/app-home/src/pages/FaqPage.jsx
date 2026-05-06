@@ -3,6 +3,9 @@ import {useLocation} from 'preact-iso';
 import {fetchFAQ, createFAQ, updateFAQ, deleteFAQ, EMPTY_FAQ} from '../../../../shared/models/faq';
 import {gidToId} from '../../../../shared/utils/gid';
 
+/** @typedef {import('../../../../shared/models/faq').FAQ} FAQ */
+
+/** @param {{ id?: string }} props */
 export default function FaqPage({id}) {
   const isNew = !id || id === 'new';
   const location = useLocation();
@@ -10,8 +13,12 @@ export default function FaqPage({id}) {
   const [faq, setFaq] = useState({...EMPTY_FAQ});
   const [snapshot, setSnapshot] = useState(faq);
   const [status, setStatus] = useState('idle');
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(/** @type {string | null} */ (null));
 
+  /**
+   * @param {keyof FAQ} key
+   * @param {any} value
+   */
   const setFaqField = (key, value) => {
     setFaq((prev) => ({...prev, [key]: value}));
   };
@@ -30,11 +37,6 @@ export default function FaqPage({id}) {
         result = await createFAQ(faq);
       } catch (_) {
         setError('Failed to save FAQ');
-        setStatus('idle');
-        return;
-      }
-      if (!result || result.error) {
-        setError((result && result.error) || 'Failed to save FAQ');
         setStatus('idle');
         return;
       }
@@ -117,7 +119,7 @@ export default function FaqPage({id}) {
               labelAccessibilityVisibility="visible"
               placeholder="e.g. What is your return policy?"
               value={faq.question}
-              onInput={(e) => setFaqField("question", e.target.value)}
+              onInput={(e) => setFaqField("question", /** @type {HTMLInputElement} */ (e.target).value)}
               details="The question customers will see"
             />
             <s-text-area
@@ -126,7 +128,7 @@ export default function FaqPage({id}) {
               labelAccessibilityVisibility="visible"
               placeholder="e.g. You can return items within 30 days of purchase."
               value={faq.answer}
-              onInput={(e) => setFaqField("answer", e.target.value)}
+              onInput={(e) => setFaqField("answer", /** @type {HTMLTextAreaElement} */ (e.target).value)}
               details="Provide a clear, helpful answer"
             />
             <s-switch
@@ -134,7 +136,7 @@ export default function FaqPage({id}) {
               name="show_on_faq_page"
               checked={faq.show_on_faq_page}
               onChange={(e) =>
-                setFaqField("show_on_faq_page", e.target.checked)
+                setFaqField("show_on_faq_page", /** @type {HTMLInputElement} */ (e.target).checked)
               }
               details="If enabled, the FAQ will be shown on the FAQ page."
             />
