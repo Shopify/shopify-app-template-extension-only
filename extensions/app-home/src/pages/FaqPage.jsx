@@ -1,7 +1,6 @@
 import {useState, useEffect} from 'preact/hooks';
 import {useLocation} from 'preact-iso';
 import {fetchFAQ, createFAQ, updateFAQ, deleteFAQ, EMPTY_FAQ} from '../../../../shared/models/faq';
-import {gidToId} from '../../../../shared/utils/gid';
 
 /** @typedef {import('../../../../shared/models/faq').FAQ} FAQ */
 
@@ -32,16 +31,14 @@ export default function FaqPage({id}) {
     setError(null);
 
     if (isNew) {
-      let result;
       try {
-        result = await createFAQ(faq);
+        await createFAQ(faq);
       } catch (_) {
         setError('Failed to save FAQ');
         setStatus('idle');
         return;
       }
-      const newId = gidToId(result);
-      location.route(`/faq/${newId}`);
+      location.route('/');
       return;
     }
 
