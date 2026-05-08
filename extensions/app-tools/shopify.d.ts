@@ -97,14 +97,14 @@ declare module './src/index.js' {
       handler: (
         input: ListFaqsInput,
       ) => ListFaqsOutput | Promise<ListFaqsOutput>,
-    );
+    ): void;
     /**
      * Get a single FAQ entry by ID
      */
     register(
       name: 'get_faq',
       handler: (input: GetFaqInput) => GetFaqOutput | Promise<GetFaqOutput>,
-    );
+    ): void;
   }
 
   const shopify: import('@shopify/ui-extensions/admin.app.tools.data').Api & {
