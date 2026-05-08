@@ -25,30 +25,57 @@ export default function HomePage() {
 
       {!loading && (
         <s-section slot="aside" heading={shopify.i18n.translate('welcome', {target: shopify.extension.target})}>
-          <s-paragraph>
-            <s-text>Framework: </s-text>
+          <s-stack direction="inline" gap="small" alignItems="center">
+            <s-paragraph>
+              <s-text>Framework: </s-text>
+              <s-link href="https://preactjs.com/" target="_blank">
+                Preact
+              </s-link>
+            </s-paragraph>
             <s-link href="https://preactjs.com/" target="_blank">
-              Preact
+              <s-box maxInlineSize="24px" maxBlockSize="24px">
+                <s-image src="./assets/preact-logo.png" alt="Preact logo" />
+              </s-box>
             </s-link>
-          </s-paragraph>
-          <s-paragraph>
-            <s-text>Interface: </s-text>
+          </s-stack>
+          <s-stack direction="inline" gap="small" alignItems="center">
+            <s-paragraph>
+              <s-text>Interface: </s-text>
+              <s-link
+                href="https://shopify.dev/docs/api/app-home/web-components"
+                target="_blank"
+              >
+                Polaris web components
+              </s-link>
+            </s-paragraph>
             <s-link
               href="https://shopify.dev/docs/api/app-home/web-components"
               target="_blank"
             >
-              Polaris web components
+              <s-box maxInlineSize="32px" maxBlockSize="32px">
+                <s-image src="./assets/polaris-icon.png" alt="Polaris logo" />
+              </s-box>
             </s-link>
-          </s-paragraph>
-          <s-paragraph>
-            <s-text>API: </s-text>
+          </s-stack>
+          <s-stack direction="inline" gap="small" alignItems="center">
+            <s-paragraph>
+              <s-text>API: </s-text>
+              <s-link
+                href="https://shopify.dev/docs/api/admin-graphql"
+                target="_blank"
+              >
+                GraphQL Admin API
+              </s-link>
+            </s-paragraph>
             <s-link
               href="https://shopify.dev/docs/api/admin-graphql"
               target="_blank"
             >
-              GraphQL Admin API
+              <s-box maxInlineSize="24px" maxBlockSize="24px">
+                <s-image src="./assets/graphql-logo.png" alt="GraphQL logo" />
+              </s-box>
             </s-link>
-          </s-paragraph>
+          </s-stack>
           <s-paragraph>
             <s-text>Database: </s-text>
             <s-link
