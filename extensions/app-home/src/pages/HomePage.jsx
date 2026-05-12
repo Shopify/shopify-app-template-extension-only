@@ -34,7 +34,7 @@ export default function HomePage() {
             </s-paragraph>
             <s-link href="https://preactjs.com/" target="_blank">
               <s-box maxInlineSize="24px" maxBlockSize="24px">
-                <s-image src="./assets/preact-logo.png" alt="Preact logo" />
+                <s-image src="./preact-logo.png" alt="Preact logo" />
               </s-box>
             </s-link>
           </s-stack>
@@ -53,7 +53,7 @@ export default function HomePage() {
               target="_blank"
             >
               <s-box maxInlineSize="32px" maxBlockSize="32px">
-                <s-image src="./assets/polaris-icon.png" alt="Polaris logo" />
+                <s-image src="./polaris-icon.png" alt="Polaris logo" />
               </s-box>
             </s-link>
           </s-stack>
@@ -72,7 +72,7 @@ export default function HomePage() {
               target="_blank"
             >
               <s-box maxInlineSize="24px" maxBlockSize="24px">
-                <s-image src="./assets/graphql-logo.png" alt="GraphQL logo" />
+                <s-image src="./graphql-logo.png" alt="GraphQL logo" />
               </s-box>
             </s-link>
           </s-stack>
