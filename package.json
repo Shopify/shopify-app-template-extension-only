@@ -9,8 +9,7 @@
     "dev": "shopify app dev",
     "info": "shopify app info",
     "generate": "shopify app generate",
-    "deploy": "shopify app deploy",
-    "typecheck": "tsc --noEmit"
+    "deploy": "shopify app deploy"
   },
   "dependencies": {},
   "trustedDependencies": [
