@@ -20,7 +20,7 @@ export default function HomePage() {
   return (
     <s-page heading="FAQs">
       <s-button slot="primary-action" variant="primary" href="/faq/new">
-        Add FAQ
+        Create FAQ
       </s-button>
 
       {!loading && (
@@ -111,7 +111,7 @@ export default function HomePage() {
                   accessibilityLabel="Add a new FAQ"
                   href="/faq/new"
                 >
-                  Add FAQ
+                  Create FAQ
                 </s-button>
               </s-button-group>
             </s-grid>
