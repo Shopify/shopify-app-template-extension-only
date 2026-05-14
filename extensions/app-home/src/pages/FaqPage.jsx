@@ -13,6 +13,9 @@ export default function FaqPage({id}) {
   const [snapshot, setSnapshot] = useState(faq);
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState(/** @type {string | null} */ (null));
+  const [fieldErrors, setFieldErrors] = useState(
+    /** @type {{question?: string, answer?: string}} */ ({}),
+  );
 
   /**
    * @param {keyof FAQ} key
@@ -20,15 +23,29 @@ export default function FaqPage({id}) {
    */
   const setFaqField = (key, value) => {
     setFaq((prev) => ({...prev, [key]: value}));
+    if (key === 'question' || key === 'answer') {
+      setFieldErrors((prev) => ({...prev, [key]: undefined}));
+    }
   };
 
   const handleReset = () => {
     setFaq({...snapshot});
+    setFieldErrors({});
   };
 
   const handleSave = async () => {
+    const nextFieldErrors =
+      /** @type {{question?: string, answer?: string}} */ ({});
+    if (!faq.question.trim()) nextFieldErrors.question = 'Question is required';
+    if (!faq.answer.trim()) nextFieldErrors.answer = 'Answer is required';
+    if (nextFieldErrors.question || nextFieldErrors.answer) {
+      setFieldErrors(nextFieldErrors);
+      return;
+    }
+
     setStatus('saving');
     setError(null);
+    setFieldErrors({});
 
     if (isNew) {
       try {
@@ -118,6 +135,8 @@ export default function FaqPage({id}) {
               value={faq.question}
               onInput={(e) => setFaqField("question", /** @type {HTMLInputElement} */ (e.target).value)}
               details="The question customers will see"
+              required
+              error={fieldErrors.question}
             />
             <s-text-area
               label="Answer"
@@ -127,6 +146,8 @@ export default function FaqPage({id}) {
               value={faq.answer}
               onInput={(e) => setFaqField("answer", /** @type {HTMLTextAreaElement} */ (e.target).value)}
               details="Provide a clear, helpful answer"
+              required
+              error={fieldErrors.answer}
             />
             <s-switch
               label="Show on the FAQ page"
