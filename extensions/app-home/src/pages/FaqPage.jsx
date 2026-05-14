@@ -24,11 +24,7 @@ export default function FaqPage({id}) {
   const setFaqField = (key, value) => {
     setFaq((prev) => ({...prev, [key]: value}));
     if (key === 'question' || key === 'answer') {
-      setFieldErrors((prev) => {
-        if (!prev[key]) return prev;
-        const {[key]: _, ...rest} = prev;
-        return rest;
-      });
+      setFieldErrors((prev) => ({...prev, [key]: undefined}));
     }
   };
 
