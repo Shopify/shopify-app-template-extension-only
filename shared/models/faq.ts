@@ -22,6 +22,20 @@ export function primeFAQ(id: string, faq: FAQ) {
 
 export function getPrimedFAQ(id: string): FAQ | null {
   const faq = primedFAQs.get(id);
+  /**
+   * Merge with initial FAQ values from the Sidekick intent payload, if present.
+   * When Sidekick navigates the merchant here via `admin.app.intent.link`,
+   * `shopify.intents.request.value` contains the data extracted from the conversation.
+   */
+  if(shopify.intents?.request?.value && faq) {
+    const {data} = shopify.intents.request.value;
+    return {
+      question: typeof data.question === 'string' ? data.question : faq.question,
+      answer: typeof data.answer === 'string' ? data.answer : faq.answer,
+      show_on_faq_page:
+        typeof data.show_on_faq_page === 'boolean' ? data.show_on_faq_page : faq.show_on_faq_page,
+    }
+  }
   return faq ? { ...faq } : null;
 }
 
