@@ -36,6 +36,36 @@ export default function FaqPage({id}) {
     }
   };
 
+  // Register the update_faq tool so Sidekick can modify form fields
+  // while the merchant is reviewing the FAQ.
+  useEffect(() => {
+    if (!shopify.tools || status !== 'idle') return;
+
+    let unregister;
+    async function registerTools() {
+      unregister = await shopify.tools.register(
+        'update_faq',
+        /** @param {{ question?: string, answer?: string, show_on_faq_page?: boolean }} input */
+        async (input) => {
+          if (typeof input?.question === 'string') {
+            setFaqField('question', input.question);
+          }
+          if (typeof input?.answer === 'string') {
+            setFaqField('answer', input.answer);
+          }
+          if (typeof input?.show_on_faq_page === 'boolean') {
+            setFaqField('show_on_faq_page', input.show_on_faq_page);
+          }
+          return {success: true};
+        },
+      );
+    }
+    registerTools();
+    return () => {
+      unregister?.();
+    };
+  }, [status, shopify.tools]);
+
   const handleReset = () => {
     setFaq({...snapshot.current});
     setFieldErrors({});
@@ -58,13 +88,16 @@ export default function FaqPage({id}) {
     if (isNew) {
       try {
         await createFAQ(faq);
-        snapshot.current = faq;
       } catch (saveError) {
         setError('Failed to save FAQ');
         setStatus('idle');
         throw saveError;
       }
       snapshot.current = faq;
+      // If this page was opened via a Sidekick intent, resolve it.
+      if (shopify.intents?.response?.ok) {
+        await shopify.intents.response.ok(faq);
+      }
       location.route('/');
       return;
     }

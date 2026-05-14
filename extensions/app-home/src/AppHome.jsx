@@ -19,6 +19,7 @@ function App() {
       <ErrorBoundary>
         <Router>
           <Route path="/" component={HomePage} />
+          <Route path="/faq" component={FaqPage} />
           <Route path="/faq/:id" component={FaqPage} />
           <Route path="/settings" component={SettingsPage} />
           <Route default component={NotFoundPage} />
