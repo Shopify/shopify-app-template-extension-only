@@ -1,10 +1,12 @@
 import {useState, useEffect} from 'preact/hooks';
-import {listFAQs} from '../../../../shared/models/faq';
+import {useLocation} from 'preact-iso';
+import {listFAQs, primeFAQ} from '../../../../shared/models/faq';
 import {gidToId} from '../../../../shared/utils/gid';
 
 /** @typedef {import('../../../../shared/models/faq').FAQSummary} FAQSummary */
 
 export default function HomePage() {
+  const location = useLocation();
   const [faqs, setFaqs] = useState(/** @type {FAQSummary[]} */ ([]));
   const [loading, setLoading] = useState(true);
 
@@ -14,6 +16,29 @@ export default function HomePage() {
       setLoading(false);
     })();
   }, []);
+
+  /**
+   * @param {Event} event
+   * @param {FAQSummary} faq
+   */
+  const openFAQ = (event, faq) => {
+    const mouseEvent = /** @type {MouseEvent} */ (event);
+    if (
+      mouseEvent.defaultPrevented ||
+      mouseEvent.button !== 0 ||
+      mouseEvent.metaKey ||
+      mouseEvent.altKey ||
+      mouseEvent.ctrlKey ||
+      mouseEvent.shiftKey
+    ) {
+      return;
+    }
+
+    const id = gidToId(faq.id);
+    mouseEvent.preventDefault();
+    primeFAQ(id, faq);
+    location.route(`/faq/${id}`);
+  };
 
   const hasFaqs = faqs.length > 0;
 
@@ -130,7 +155,10 @@ export default function HomePage() {
               {faqs.map((faq) => (
                 <s-table-row key={faq.id}>
                   <s-table-cell>
-                    <s-link href={`/faq/${gidToId(faq.id)}`}>
+                    <s-link
+                      href={`/faq/${gidToId(faq.id)}`}
+                      onClick={(event) => openFAQ(event, faq)}
+                    >
                       {faq.question || 'Untitled'}
                     </s-link>
                   </s-table-cell>
