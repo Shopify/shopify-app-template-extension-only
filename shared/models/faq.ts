@@ -14,6 +14,17 @@ export const EMPTY_FAQ: FAQ = {
   show_on_faq_page: true,
 };
 
+const primedFAQs = new Map<string, FAQ>();
+
+export function primeFAQ(id: string, faq: FAQ) {
+  primedFAQs.set(id, { ...faq });
+}
+
+export function getPrimedFAQ(id: string): FAQ | null {
+  const faq = primedFAQs.get(id);
+  return faq ? { ...faq } : null;
+}
+
 function gqlFetch(query: string, variables?: Record<string, unknown>) {
   return fetch("shopify:admin/api/2026-04/graphql.json", {
     method: "POST",
@@ -49,7 +60,9 @@ export async function fetchFAQ(id: string): Promise<FAQ> {
     { id: idToGid(id) },
   );
 
-  return parseFields(json.data.metaobject.fields);
+  const faq = parseFields(json.data.metaobject.fields);
+  primeFAQ(id, faq);
+  return faq;
 }
 
 export async function listFAQs(): Promise<FAQSummary[]> {
@@ -113,6 +126,7 @@ export async function updateFAQ(
       metaobject: { fields: toFieldsPayload(faq) },
     },
   );
+  primeFAQ(id, faq);
 }
 
 export async function deleteFAQ(id: string): Promise<void> {

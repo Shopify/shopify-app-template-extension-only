@@ -1,6 +1,13 @@
 import {useState, useEffect} from 'preact/hooks';
 import {useLocation} from 'preact-iso';
-import {fetchFAQ, createFAQ, updateFAQ, deleteFAQ, EMPTY_FAQ} from '../../../../shared/models/faq';
+import {
+  fetchFAQ,
+  createFAQ,
+  updateFAQ,
+  deleteFAQ,
+  EMPTY_FAQ,
+  getPrimedFAQ,
+} from '../../../../shared/models/faq';
 
 /** @typedef {import('../../../../shared/models/faq').FAQ} FAQ */
 
@@ -8,10 +15,11 @@ import {fetchFAQ, createFAQ, updateFAQ, deleteFAQ, EMPTY_FAQ} from '../../../../
 export default function FaqPage({id}) {
   const isNew = !id || id === 'new';
   const location = useLocation();
+  const primedFAQ = !isNew && id ? getPrimedFAQ(id) : null;
 
-  const [faq, setFaq] = useState({...EMPTY_FAQ});
-  const [snapshot, setSnapshot] = useState(faq);
-  const [status, setStatus] = useState('idle');
+  const [faq, setFaq] = useState(primedFAQ ?? {...EMPTY_FAQ});
+  const [snapshot, setSnapshot] = useState(primedFAQ ?? {...EMPTY_FAQ});
+  const [status, setStatus] = useState(isNew || primedFAQ ? 'idle' : 'loading');
   const [error, setError] = useState(/** @type {string | null} */ (null));
   const [fieldErrors, setFieldErrors] = useState(
     /** @type {{question?: string, answer?: string}} */ ({}),
@@ -85,8 +93,19 @@ export default function FaqPage({id}) {
 
   useEffect(() => {
     if (isNew) return;
+
+    const primedFAQ = getPrimedFAQ(id);
+    if (primedFAQ) {
+      setSnapshot(primedFAQ);
+      setFaq(primedFAQ);
+      setStatus('idle');
+      setError(null);
+      return;
+    }
+
     setStatus('loading');
     setError(null);
+    shopify.loading(true);
 
     fetchFAQ(id)
       .then((data) => {
@@ -95,15 +114,19 @@ export default function FaqPage({id}) {
       })
       .finally(() => {
         setStatus('idle');
+        shopify.loading(false);
       });
   }, [id]);
 
-  if (status === 'loading') {
-    return null;
-  }
+  const isLoading = status === 'loading';
+  const heading = isNew
+    ? 'New FAQ'
+    : isLoading
+      ? ''
+      : snapshot.question || 'FAQ';
 
   return (
-    <s-page heading={isNew ? "New FAQ" : snapshot.question} inlineSize="small">
+    <s-page heading={heading} inlineSize="small">
       <s-link slot="breadcrumb-actions" href="/">
         FAQs
       </s-link>
@@ -113,6 +136,7 @@ export default function FaqPage({id}) {
           slot="secondary-actions"
           onClick={handleDelete}
           loading={status === "deleting"}
+          disabled={isLoading}
         >
           Delete
         </s-button>
@@ -124,43 +148,45 @@ export default function FaqPage({id}) {
         </s-section>
       )}
 
-      <s-section heading="FAQ details">
-        <s-grid gap="base">
-          <s-form onSubmit={handleSave} onReset={handleReset}>
-            <s-text-field
-              label="Question"
-              name="question"
-              labelAccessibilityVisibility="visible"
-              placeholder="e.g. What is your return policy?"
-              value={faq.question}
-              onInput={(e) => setFaqField("question", /** @type {HTMLInputElement} */ (e.target).value)}
-              details="The question customers will see"
-              required
-              error={fieldErrors.question}
-            />
-            <s-text-area
-              label="Answer"
-              name="answer"
-              labelAccessibilityVisibility="visible"
-              placeholder="e.g. You can return items within 30 days of purchase."
-              value={faq.answer}
-              onInput={(e) => setFaqField("answer", /** @type {HTMLTextAreaElement} */ (e.target).value)}
-              details="Provide a clear, helpful answer"
-              required
-              error={fieldErrors.answer}
-            />
-            <s-switch
-              label="Show on the FAQ page"
-              name="show_on_faq_page"
-              checked={faq.show_on_faq_page}
-              onChange={(e) =>
-                setFaqField("show_on_faq_page", /** @type {HTMLInputElement} */ (e.target).checked)
-              }
-              details="If enabled, the FAQ will be shown on the FAQ page."
-            />
-          </s-form>
-        </s-grid>
-      </s-section>
+      {!isLoading && (
+        <s-section heading="FAQ details">
+          <s-grid gap="base">
+            <s-form onSubmit={handleSave} onReset={handleReset}>
+              <s-text-field
+                label="Question"
+                name="question"
+                labelAccessibilityVisibility="visible"
+                placeholder="e.g. What is your return policy?"
+                value={faq.question}
+                onInput={(e) => setFaqField("question", /** @type {HTMLInputElement} */ (e.target).value)}
+                details="The question customers will see"
+                required
+                error={fieldErrors.question}
+              />
+              <s-text-area
+                label="Answer"
+                name="answer"
+                labelAccessibilityVisibility="visible"
+                placeholder="e.g. You can return items within 30 days of purchase."
+                value={faq.answer}
+                onInput={(e) => setFaqField("answer", /** @type {HTMLTextAreaElement} */ (e.target).value)}
+                details="Provide a clear, helpful answer"
+                required
+                error={fieldErrors.answer}
+              />
+              <s-switch
+                label="Show on the FAQ page"
+                name="show_on_faq_page"
+                checked={faq.show_on_faq_page}
+                onChange={(e) =>
+                  setFaqField("show_on_faq_page", /** @type {HTMLInputElement} */ (e.target).checked)
+                }
+                details="If enabled, the FAQ will be shown on the FAQ page."
+              />
+            </s-form>
+          </s-grid>
+        </s-section>
+      )}
     </s-page>
   );
 }
