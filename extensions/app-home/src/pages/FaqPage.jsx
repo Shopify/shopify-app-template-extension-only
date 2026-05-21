@@ -41,7 +41,7 @@ export default function FaqPage({id}) {
     setFieldErrors({});
   };
 
-  const handleSave = async () => {
+  const saveFAQ = async () => {
     const nextFieldErrors =
       /** @type {{question?: string, answer?: string}} */ ({});
     if (!faq.question.trim()) nextFieldErrors.question = 'Question is required';
@@ -76,6 +76,12 @@ export default function FaqPage({id}) {
     }
     setSnapshot({...faq});
     setStatus('idle');
+  };
+
+  const handleSave = (event) => {
+    const promise = saveFAQ();
+    event?.waitUntil?.(promise);
+    return promise;
   };
 
   const handleDelete = async () => {
