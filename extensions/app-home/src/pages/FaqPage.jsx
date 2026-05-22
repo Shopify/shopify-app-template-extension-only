@@ -58,10 +58,10 @@ export default function FaqPage({id}) {
     if (isNew) {
       try {
         await createFAQ(faq);
-      } catch (_) {
+      } catch (saveError) {
         setError('Failed to save FAQ');
         setStatus('idle');
-        return;
+        throw saveError;
       }
       location.route('/');
       return;
@@ -69,10 +69,10 @@ export default function FaqPage({id}) {
 
     try {
       await updateFAQ(id, faq);
-    } catch (_) {
+    } catch (saveError) {
       setError('Failed to update FAQ');
       setStatus('idle');
-      return;
+      throw saveError;
     }
     setSnapshot({...faq});
     setStatus('idle');
