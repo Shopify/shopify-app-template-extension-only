@@ -41,7 +41,7 @@ export default function FaqPage({id}) {
     setFieldErrors({});
   };
 
-  const handleSave = async () => {
+  const saveFAQ = async () => {
     const nextFieldErrors =
       /** @type {{question?: string, answer?: string}} */ ({});
     if (!faq.question.trim()) nextFieldErrors.question = 'Question is required';
@@ -58,10 +58,10 @@ export default function FaqPage({id}) {
     if (isNew) {
       try {
         await createFAQ(faq);
-      } catch (_) {
+      } catch (saveError) {
         setError('Failed to save FAQ');
         setStatus('idle');
-        return;
+        throw saveError;
       }
       location.route('/');
       return;
@@ -69,13 +69,19 @@ export default function FaqPage({id}) {
 
     try {
       await updateFAQ(id, faq);
-    } catch (_) {
+    } catch (saveError) {
       setError('Failed to update FAQ');
       setStatus('idle');
-      return;
+      throw saveError;
     }
     setSnapshot({...faq});
     setStatus('idle');
+  };
+
+  const handleSave = (event) => {
+    const promise = saveFAQ();
+    event?.waitUntil?.(promise);
+    return promise;
   };
 
   const handleDelete = async () => {
