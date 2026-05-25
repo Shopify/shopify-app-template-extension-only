@@ -12,7 +12,7 @@ const MIME_TYPE = 'application/faq';
 function toResourceLink(id, faq) {
   return {
     type: 'resource_link',
-    uri: `gid:${MIME_TYPE}/${gidToId(id)}`,
+    uri: `gid://${MIME_TYPE}/${gidToId(id)}`,
     name: faq.question,
     mimeType: MIME_TYPE,
     _meta: {
