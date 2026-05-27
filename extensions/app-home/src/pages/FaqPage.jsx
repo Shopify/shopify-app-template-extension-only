@@ -61,6 +61,7 @@ export default function FaqPage({id}) {
     if (isNew) {
       try {
         await createFAQ(faq);
+        snapshot.current = faq;
       } catch (saveError) {
         setError('Failed to save FAQ');
         setStatus('idle');
