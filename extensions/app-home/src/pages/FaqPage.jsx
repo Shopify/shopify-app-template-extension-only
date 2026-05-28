@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'preact/hooks';
+import {useState, useEffect, useRef} from 'preact/hooks';
 import {useLocation} from 'preact-iso';
 import {
   fetchFAQ,
@@ -18,7 +18,7 @@ export default function FaqPage({id}) {
   const primedFAQ = !isNew && id ? getPrimedFAQ(id) : null;
 
   const [faq, setFaq] = useState(primedFAQ ?? {...EMPTY_FAQ});
-  const [snapshot, setSnapshot] = useState(primedFAQ ?? {...EMPTY_FAQ});
+  const snapshot = useRef(primedFAQ ?? {...EMPTY_FAQ})
   const [status, setStatus] = useState(isNew || primedFAQ ? 'idle' : 'loading');
   const [error, setError] = useState(/** @type {string | null} */ (null));
   const [fieldErrors, setFieldErrors] = useState(
@@ -37,7 +37,7 @@ export default function FaqPage({id}) {
   };
 
   const handleReset = () => {
-    setFaq({...snapshot});
+    setFaq({...snapshot.current});
     setFieldErrors({});
   };
 
@@ -63,6 +63,7 @@ export default function FaqPage({id}) {
         setStatus('idle');
         throw saveError;
       }
+      snapshot.current = faq;
       location.route('/');
       return;
     }
@@ -74,7 +75,7 @@ export default function FaqPage({id}) {
       setStatus('idle');
       throw saveError;
     }
-    setSnapshot({...faq});
+    snapshot.current = faq;
     setStatus('idle');
   };
 
@@ -102,7 +103,7 @@ export default function FaqPage({id}) {
 
     const primedFAQ = getPrimedFAQ(id);
     if (primedFAQ) {
-      setSnapshot(primedFAQ);
+      snapshot.current = primedFAQ
       setFaq(primedFAQ);
       setStatus('idle');
       setError(null);
@@ -115,7 +116,7 @@ export default function FaqPage({id}) {
 
     fetchFAQ(id)
       .then((data) => {
-        setSnapshot(data);
+        snapshot.current = data;
         setFaq(data);
       })
       .finally(() => {
@@ -129,7 +130,7 @@ export default function FaqPage({id}) {
     ? 'New FAQ'
     : isLoading
       ? ''
-      : snapshot.question || 'FAQ';
+      : faq.question || 'FAQ';
 
   return (
     <s-page heading={heading} inlineSize="small">
