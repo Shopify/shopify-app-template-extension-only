@@ -1,5 +1,11 @@
 {
   "$schema": "https://extensions.shopifycdn.com/shopifycloud/schemas/v1/intent.json",
+  "value": {
+    "type": "string",
+    "description": "The GID of the faq to edit.",
+    "mapTo": "param",
+    "fieldName": "id"
+  },
   "inputSchema": {
     "$ref": "https://extensions.shopifycdn.com/shopifycloud/schemas/v1/application/faq.json",
     "type": "object",

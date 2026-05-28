@@ -1,12 +1,12 @@
 [[extensions]]
-name = "FAQ Sidekick"
-description = "Create and edit FAQ entries via Sidekick"
-handle = "app-action"
+name = "FAQ Sidekick Create"
+description = "Create FAQ entries via Sidekick"
+handle = "app-action-link-create"
 type = "admin_link"
 
 [[extensions.targeting]]
 target = "admin.app.intent.link"
-url = "/faq"
+url = "/faq/new"
 tools = "./tools.json"
 instructions = "./instructions.md"
 
@@ -19,3 +19,21 @@ schema = "./intent-schema.json"
 type = "application/faq"
 action = "edit"
 schema = "./intent-schema.json"
+
+[[extensions]]
+name = "FAQ Sidekick Edit"
+description = "Edit FAQ entries via Sidekick"
+handle = "app-action-link-edit"
+type = "admin_link"
+
+# Edit an existing FAQ — navigates to /faq/{id}
+[[extensions.targeting]]
+target = "admin.app.intent.link"
+url = "/faq/{id}"
+tools = "./tools.json"
+instructions = "./instructions.md"
+
+[[extensions.targeting.intents]]
+type = "application/faq"
+action = "edit"
+schema = "./intent-edit-schema.json"
