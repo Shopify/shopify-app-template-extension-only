@@ -21,7 +21,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pnpm install
+          pnpm install --frozen-lockfile
           pnpm add -D prettier eslint-plugin-import
 
       - name: Create temporary tsconfig file for transpilation
@@ -101,11 +101,13 @@ jobs:
           git restore package.json
 
       - name: Stage changes to files
+        env:
+          HEAD_SHA: ${{ github.sha }}
         run: |
           git add .
           git checkout -b temp_javascript_updates
           git commit -m "Convert template to Javascript"
-          git fetch origin javascript || git checkout -b javascript main
+          git fetch origin javascript || git checkout -b javascript "$HEAD_SHA"
           git checkout -
           git rebase -m -X theirs javascript
           git push -f origin temp_javascript_updates:javascript_updates

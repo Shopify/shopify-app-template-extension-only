@@ -16,4 +16,4 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: Install
-        run: yarn install
+        run: pnpm install --frozen-lockfile
