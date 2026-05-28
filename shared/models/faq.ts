@@ -27,7 +27,7 @@ export function getPrimedFAQ(id: string): FAQ | null {
    * When Sidekick navigates the merchant here via `admin.app.intent.link`,
    * `shopify.intents.request.value` contains the data extracted from the conversation.
    */
-  if(shopify.intents?.request?.value && faq) {
+  if(shopify.intents?.request?.value.data && faq) {
     const {data} = shopify.intents.request.value;
     return {
       question: typeof data.question === 'string' ? data.question : faq.question,

@@ -1,5 +1,5 @@
-import {useState, useEffect, useRef} from 'preact/hooks';
-import {useLocation} from 'preact-iso';
+import { useState, useEffect, useRef } from "preact/hooks";
+import { useLocation } from "preact-iso";
 import {
   fetchFAQ,
   createFAQ,
@@ -7,19 +7,19 @@ import {
   deleteFAQ,
   EMPTY_FAQ,
   getPrimedFAQ,
-} from '../../../../shared/models/faq';
+} from "../../../../shared/models/faq";
 
 /** @typedef {import('../../../../shared/models/faq').FAQ} FAQ */
 
 /** @param {{ id?: string }} props */
-export default function FaqPage({id}) {
-  const isNew = !id || id === 'new';
+export default function FaqPage({ id }) {
+  const isNew = !id || id === "new";
   const location = useLocation();
   const primedFAQ = !isNew && id ? getPrimedFAQ(id) : null;
 
-  const [faq, setFaq] = useState(primedFAQ ?? {...EMPTY_FAQ});
-  const snapshot = useRef(primedFAQ ?? {...EMPTY_FAQ})
-  const [status, setStatus] = useState(isNew || primedFAQ ? 'idle' : 'loading');
+  const [faq, setFaq] = useState(primedFAQ ?? { ...EMPTY_FAQ });
+  const snapshot = useRef(primedFAQ ?? { ...EMPTY_FAQ });
+  const [status, setStatus] = useState(isNew || primedFAQ ? "idle" : "loading");
   const [error, setError] = useState(/** @type {string | null} */ (null));
   const [fieldErrors, setFieldErrors] = useState(
     /** @type {{question?: string, answer?: string}} */ ({}),
@@ -30,61 +30,57 @@ export default function FaqPage({id}) {
    * @param {any} value
    */
   const setFaqField = (key, value) => {
-    setFaq((prev) => ({...prev, [key]: value}));
-    if (key === 'question' || key === 'answer') {
-      setFieldErrors((prev) => ({...prev, [key]: undefined}));
+    setFaq((prev) => ({ ...prev, [key]: value }));
+    if (key === "question" || key === "answer") {
+      setFieldErrors((prev) => ({ ...prev, [key]: undefined }));
     }
   };
 
   // Register the update_faq tool so Sidekick can modify form fields
   // while the merchant is reviewing the FAQ.
   useEffect(() => {
-    if (!shopify.tools || status !== 'idle') return;
+    if (!shopify.tools || status !== "idle") return;
 
-    let unregister;
-    async function registerTools() {
-      unregister = await shopify.tools.register(
-        'update_faq',
-        /** @param {{ question?: string, answer?: string, show_on_faq_page?: boolean }} input */
-        async (input) => {
-          if (typeof input?.question === 'string') {
-            setFaqField('question', input.question);
-          }
-          if (typeof input?.answer === 'string') {
-            setFaqField('answer', input.answer);
-          }
-          if (typeof input?.show_on_faq_page === 'boolean') {
-            setFaqField('show_on_faq_page', input.show_on_faq_page);
-          }
-          return {success: true};
-        },
-      );
-    }
-    registerTools();
+    const unregister = shopify.tools.register(
+      "update_faq",
+      /** @param {{ question?: string, answer?: string, show_on_faq_page?: boolean }} input */
+      async (input) => {
+        if (typeof input?.question === "string") {
+          setFaqField("question", input.question);
+        }
+        if (typeof input?.answer === "string") {
+          setFaqField("answer", input.answer);
+        }
+        if (typeof input?.show_on_faq_page === "boolean") {
+          setFaqField("show_on_faq_page", input.show_on_faq_page);
+        }
+        return { success: true };
+      },
+    );
     return () => {
       unregister?.();
     };
   }, [status, shopify.tools]);
 
   const handleReset = () => {
-    setFaq({...snapshot.current});
+    setFaq({ ...snapshot.current });
     setFieldErrors({});
   };
 
   const saveFAQ = async () => {
     const nextFieldErrors =
       /** @type {{question?: string, answer?: string}} */ ({});
-    if (!faq.question.trim()) nextFieldErrors.question = 'Question is required';
-    if (!faq.answer.trim()) nextFieldErrors.answer = 'Answer is required';
+    if (!faq.question.trim()) nextFieldErrors.question = "Question is required";
+    if (!faq.answer.trim()) nextFieldErrors.answer = "Answer is required";
     if (nextFieldErrors.question || nextFieldErrors.answer) {
       setFieldErrors(nextFieldErrors);
       // Throw so the host knows the submit failed and keeps the CSB armed.
       // Returning false would clear the dirty state the same way a
       // successful save does, hiding the field errors from the merchant.
-      throw new Error('Validation failed');
+      throw new Error("Validation failed");
     }
 
-    setStatus('saving');
+    setStatus("saving");
     setError(null);
     setFieldErrors({});
 
@@ -92,8 +88,8 @@ export default function FaqPage({id}) {
       try {
         await createFAQ(faq);
       } catch (saveError) {
-        setError('Failed to save FAQ');
-        setStatus('idle');
+        setError("Failed to save FAQ");
+        setStatus("idle");
         throw saveError;
       }
       snapshot.current = faq;
@@ -107,12 +103,12 @@ export default function FaqPage({id}) {
     try {
       await updateFAQ(id, faq);
     } catch (saveError) {
-      setError('Failed to update FAQ');
-      setStatus('idle');
+      setError("Failed to update FAQ");
+      setStatus("idle");
       throw saveError;
     }
     snapshot.current = faq;
-    setStatus('idle');
+    setStatus("idle");
     return false;
   };
 
@@ -124,21 +120,21 @@ export default function FaqPage({id}) {
     event?.waitUntil?.(promise);
     const shouldNavigate = await promise;
     if (shouldNavigate) {
-      location.route('/');
+      location.route("/");
     }
   };
 
   const handleDelete = async () => {
     if (isNew) return;
-    setStatus('deleting');
+    setStatus("deleting");
     try {
       await deleteFAQ(id);
     } catch (_) {
-      setError('Failed to delete FAQ');
-      setStatus('idle');
+      setError("Failed to delete FAQ");
+      setStatus("idle");
       return;
     }
-    location.route('/');
+    location.route("/");
   };
 
   useEffect(() => {
@@ -146,12 +142,12 @@ export default function FaqPage({id}) {
 
     const primedFAQ = getPrimedFAQ(id);
     if (primedFAQ) {
-      snapshot.current = primedFAQ
+      snapshot.current = primedFAQ;
       setFaq(primedFAQ);
-      setStatus('idle');
+      setStatus("idle");
       setError(null);
     } else {
-      setStatus('loading');
+      setStatus("loading");
       setError(null);
       shopify.loading(true);
     }
@@ -162,17 +158,13 @@ export default function FaqPage({id}) {
         setFaq(data);
       })
       .finally(() => {
-        setStatus('idle');
+        setStatus("idle");
         shopify.loading(false);
       });
   }, [id]);
 
-  const isLoading = status === 'loading';
-  const heading = isNew
-    ? 'New FAQ'
-    : isLoading
-      ? ''
-      : faq.question || 'FAQ';
+  const isLoading = status === "loading";
+  const heading = isNew ? "New FAQ" : isLoading ? "" : faq.question || "FAQ";
 
   return (
     <s-page heading={heading} inlineSize="small">
@@ -207,7 +199,12 @@ export default function FaqPage({id}) {
                 labelAccessibilityVisibility="visible"
                 placeholder="e.g. What is your return policy?"
                 value={faq.question}
-                onInput={(e) => setFaqField("question", /** @type {HTMLInputElement} */ (e.target).value)}
+                onInput={(e) =>
+                  setFaqField(
+                    "question",
+                    /** @type {HTMLInputElement} */ (e.target).value,
+                  )
+                }
                 details="The question customers will see"
                 required
                 error={fieldErrors.question}
@@ -218,7 +215,12 @@ export default function FaqPage({id}) {
                 labelAccessibilityVisibility="visible"
                 placeholder="e.g. You can return items within 30 days of purchase."
                 value={faq.answer}
-                onInput={(e) => setFaqField("answer", /** @type {HTMLTextAreaElement} */ (e.target).value)}
+                onInput={(e) =>
+                  setFaqField(
+                    "answer",
+                    /** @type {HTMLTextAreaElement} */ (e.target).value,
+                  )
+                }
                 details="Provide a clear, helpful answer"
                 required
                 error={fieldErrors.answer}
@@ -228,7 +230,10 @@ export default function FaqPage({id}) {
                 name="show_on_faq_page"
                 checked={faq.show_on_faq_page}
                 onChange={(e) =>
-                  setFaqField("show_on_faq_page", /** @type {HTMLInputElement} */ (e.target).checked)
+                  setFaqField(
+                    "show_on_faq_page",
+                    /** @type {HTMLInputElement} */ (e.target).checked,
+                  )
                 }
                 details="If enabled, the FAQ will be shown on the FAQ page."
               />
