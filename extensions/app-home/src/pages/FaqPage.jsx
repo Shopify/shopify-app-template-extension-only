@@ -118,9 +118,13 @@ export default function FaqPage({ id }) {
     // resolved value here means the save succeeded.
     const promise = saveFAQ();
     event?.waitUntil?.(promise);
-    const shouldNavigate = await promise;
-    if (shouldNavigate) {
-      location.route("/");
+    const shouldGoBack = await promise;
+    // If this page was opened via a Sidekick intent, resolve it.
+    if (shopify.intents?.response?.ok) {
+      await shopify.intents.response.ok({data: faq});
+    }
+    if (shouldGoBack) {
+      location.route('/');
     }
   };
 
