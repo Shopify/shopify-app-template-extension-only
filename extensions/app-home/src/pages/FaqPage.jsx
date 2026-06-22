@@ -79,6 +79,7 @@ export default function FaqPage({id}) {
     return false;
   };
 
+  /** @param {any} event */
   const handleSave = async (event) => {
     const promise = saveFAQ();
     event?.waitUntil?.(promise);
@@ -110,12 +111,11 @@ export default function FaqPage({id}) {
       setFaq(primedFAQ);
       setStatus('idle');
       setError(null);
-      return;
+    } else {
+      setStatus('loading');
+      setError(null);
+      shopify.loading(true);
     }
-
-    setStatus('loading');
-    setError(null);
-    shopify.loading(true);
 
     fetchFAQ(id)
       .then((data) => {
