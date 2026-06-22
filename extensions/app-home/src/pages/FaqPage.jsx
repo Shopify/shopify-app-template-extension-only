@@ -48,7 +48,7 @@ export default function FaqPage({id}) {
     if (!faq.answer.trim()) nextFieldErrors.answer = 'Answer is required';
     if (nextFieldErrors.question || nextFieldErrors.answer) {
       setFieldErrors(nextFieldErrors);
-      return;
+      return false;
     }
 
     setStatus('saving');
@@ -64,8 +64,7 @@ export default function FaqPage({id}) {
         throw saveError;
       }
       snapshot.current = faq;
-      location.route('/');
-      return;
+      return true;
     }
 
     try {
@@ -77,12 +76,16 @@ export default function FaqPage({id}) {
     }
     snapshot.current = faq;
     setStatus('idle');
+    return false;
   };
 
-  const handleSave = (event) => {
+  const handleSave = async (event) => {
     const promise = saveFAQ();
     event?.waitUntil?.(promise);
-    return promise;
+    const shouldGoBack = await promise;
+    if (shouldGoBack) {
+      location.route('/');
+    }
   };
 
   const handleDelete = async () => {
