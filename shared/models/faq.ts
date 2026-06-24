@@ -1,4 +1,4 @@
-import { idToGid } from "../utils/gid";
+import { gidToId, idToGid } from "../utils/gid";
 
 export interface FAQ {
   question: string;
@@ -80,7 +80,7 @@ export async function listFAQs(): Promise<FAQSummary[]> {
     }`,
   );
 
-  return json.data.metaobjects.edges.map(
+  const faqs = json.data.metaobjects.edges.map(
     ({
       node,
     }: {
@@ -90,6 +90,12 @@ export async function listFAQs(): Promise<FAQSummary[]> {
       ...parseFields(node.fields),
     }),
   );
+
+  for (const { id, ...faq } of faqs) {
+    primeFAQ(gidToId(id), faq);
+  }
+
+  return faqs;
 }
 
 export async function createFAQ(faq: FAQ): Promise<string> {
