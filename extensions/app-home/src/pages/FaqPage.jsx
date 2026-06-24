@@ -48,7 +48,10 @@ export default function FaqPage({id}) {
     if (!faq.answer.trim()) nextFieldErrors.answer = 'Answer is required';
     if (nextFieldErrors.question || nextFieldErrors.answer) {
       setFieldErrors(nextFieldErrors);
-      return false;
+      // Throw so the host knows the submit failed and keeps the CSB armed.
+      // Returning false would clear the dirty state the same way a
+      // successful save does, hiding the field errors from the merchant.
+      throw new Error('Validation failed');
     }
 
     setStatus('saving');
@@ -81,10 +84,12 @@ export default function FaqPage({id}) {
 
   /** @param {any} event */
   const handleSave = async (event) => {
+    // saveFAQ throws on both validation failure and API error, so any
+    // resolved value here means the save succeeded.
     const promise = saveFAQ();
     event?.waitUntil?.(promise);
-    const shouldGoBack = await promise;
-    if (shouldGoBack) {
+    const shouldNavigate = await promise;
+    if (shouldNavigate) {
       location.route('/');
     }
   };
