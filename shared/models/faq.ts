@@ -25,7 +25,6 @@ export function getPrimedFAQ(id: string): FAQ | null {
   return faq ? { ...faq } : null;
 }
 
-// Metaobject `values` (read and write) requires Admin API 2026-07 or above.
 function gqlFetch(query: string, variables?: Record<string, unknown>) {
   return fetch("shopify:admin/api/2026-07/graphql.json", {
     method: "POST",
