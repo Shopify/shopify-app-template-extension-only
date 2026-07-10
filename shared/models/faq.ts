@@ -25,28 +25,23 @@ export function getPrimedFAQ(id: string): FAQ | null {
   return faq ? { ...faq } : null;
 }
 
+// Metaobject `values` (read and write) requires Admin API 2026-07 or above.
 function gqlFetch(query: string, variables?: Record<string, unknown>) {
-  return fetch("shopify:admin/api/2026-04/graphql.json", {
+  return fetch("shopify:admin/api/2026-07/graphql.json", {
     method: "POST",
     body: JSON.stringify({ query, variables }),
   }).then((r) => r.json());
 }
 
-function parseFields(fields: Array<{ key: string; value: string }>): FAQ {
-  const valueOf = (key: string) => fields.find((f) => f.key === key)?.value;
+// The `values` field returns each metaobject field already deserialised to its
+// native type (text -> string, boolean -> boolean), keyed by field key, so it
+// maps straight onto FAQ. We only apply defaults for fields that may be absent.
+function fromValues(values: Record<string, unknown>): FAQ {
   return {
-    question: valueOf("question") ?? "",
-    answer: valueOf("answer") ?? "",
-    show_on_faq_page: valueOf("show_on_faq_page") !== "false",
+    question: (values.question as string) ?? "",
+    answer: (values.answer as string) ?? "",
+    show_on_faq_page: (values.show_on_faq_page as boolean) ?? true,
   };
-}
-
-function toFieldsPayload(faq: FAQ) {
-  return [
-    { key: "question", value: faq.question },
-    { key: "answer", value: faq.answer },
-    { key: "show_on_faq_page", value: String(faq.show_on_faq_page) },
-  ];
 }
 
 export async function fetchFAQ(id: string): Promise<FAQ> {
@@ -54,13 +49,13 @@ export async function fetchFAQ(id: string): Promise<FAQ> {
     `#graphql
     query FAQ($id: ID!) {
       metaobject(id: $id) {
-        fields { key value }
+        values
       }
     }`,
     { id: idToGid(id) },
   );
 
-  const faq = parseFields(json.data.metaobject.fields);
+  const faq = fromValues(json.data.metaobject.values);
   primeFAQ(id, faq);
   return faq;
 }
@@ -73,7 +68,7 @@ export async function listFAQs(): Promise<FAQSummary[]> {
         edges {
           node {
             id
-            fields { key value }
+            values
           }
         }
       }
@@ -84,10 +79,10 @@ export async function listFAQs(): Promise<FAQSummary[]> {
     ({
       node,
     }: {
-      node: { id: string; fields: Array<{ key: string; value: string }> };
+      node: { id: string; values: Record<string, unknown> };
     }) => ({
       id: node.id,
-      ...parseFields(node.fields),
+      ...fromValues(node.values),
     }),
   );
 
@@ -109,7 +104,7 @@ export async function createFAQ(faq: FAQ): Promise<string> {
     {
       metaobject: {
         type: "$app:faq",
-        fields: toFieldsPayload(faq),
+        values: faq,
       },
     },
   );
@@ -129,7 +124,7 @@ export async function updateFAQ(
     }`,
     {
       id: idToGid(id),
-      metaobject: { fields: toFieldsPayload(faq) },
+      metaobject: { values: faq },
     },
   );
   primeFAQ(id, faq);
