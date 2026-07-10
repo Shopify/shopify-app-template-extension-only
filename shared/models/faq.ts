@@ -33,14 +33,13 @@ function gqlFetch(query: string, variables?: Record<string, unknown>) {
   }).then((r) => r.json());
 }
 
-// The `values` field returns each metaobject field already deserialised to its
-// native type (text -> string, boolean -> boolean), keyed by field key, so it
-// maps straight onto FAQ. We only apply defaults for fields that may be absent.
-function fromValues(values: Record<string, unknown>): FAQ {
+type FAQValues = { [K in keyof FAQ]?: FAQ[K] | null };
+
+function fromValues(values: FAQValues): FAQ {
   return {
-    question: (values.question as string) ?? "",
-    answer: (values.answer as string) ?? "",
-    show_on_faq_page: (values.show_on_faq_page as boolean) ?? true,
+    question: values.question ?? "",
+    answer: values.answer ?? "",
+    show_on_faq_page: values.show_on_faq_page ?? true,
   };
 }
 
@@ -79,7 +78,7 @@ export async function listFAQs(): Promise<FAQSummary[]> {
     ({
       node,
     }: {
-      node: { id: string; values: Record<string, unknown> };
+      node: { id: string; values: FAQValues };
     }) => ({
       id: node.id,
       ...fromValues(node.values),
